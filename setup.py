@@ -44,10 +44,11 @@ def str2bool(input_str: str) -> bool:
 
 def is_pip() -> bool:
     # This will end with python if driven with python setup.py or PEP517_BUILD_BACKEND will be set
-    return (
-        osp.basename(os.environ.get("_", "/pip/no")).startswith("pip")
-        or os.environ.get("PEP517_BUILD_BACKEND") is not None
-    )
+    return True
+    # return (
+    #     osp.basename(os.environ.get("_", "/pip/no")).startswith("pip")
+    #     or os.environ.get("PEP517_BUILD_BACKEND") is not None
+    # )
 
 
 # TODO refactor to the proper way to pass options to setup.py so pip can do so.
@@ -319,12 +320,12 @@ class CMakeBuild(build_ext):
             build_args += ["-j{}".format(self.parallel) if self.parallel else "-j"]
 
         cmake_args += [
-            "-DBUILD_GUI_VIEWERS={}".format("ON" if not args.headless else "OFF")
+            "-DBUILD_GUI_VIEWERS={}".format("OFF" if not args.headless else "OFF")
         ]
 
         cmake_args += ["-DBUILD_TEST={}".format("ON" if args.build_tests else "OFF")]
         cmake_args += [
-            "-DBUILD_WITH_BULLET={}".format("ON" if args.with_bullet else "OFF")
+            "-DBUILD_WITH_BULLET={}".format("ON" if args.with_bullet else "ON")
         ]
         cmake_args += [
             "-DBUILD_WITH_VHACD={}".format("ON" if args.with_vhacd else "OFF")
@@ -381,13 +382,13 @@ class CMakeBuild(build_ext):
         if is_pip():
             return
 
-        if not args.headless:
-            link_dst = osp.join(self.build_temp, "viewer")
-            if not osp.islink(link_dst):
-                os.symlink(
-                    osp.abspath(osp.join(self.build_temp, "utils/viewer/viewer")),
-                    link_dst,
-                )
+        # if not args.headless:
+        #     link_dst = osp.join(self.build_temp, "viewer")
+        #     if not osp.islink(link_dst):
+        #         os.symlink(
+        #             osp.abspath(osp.join(self.build_temp, "utils/viewer/viewer")),
+        #             link_dst,
+        #         )
 
     def run_cmake(self, cmake_args):
         if args.force_cmake:

@@ -13,12 +13,16 @@ version = "*"
 channels = ["https://prefix.dev/conda-forge"]
 
 [package]
-name = "habitat_sim"
-version = "0.2.3"
+name = "habitat-sim"
+version = "0.2.4"
 
 [package.host-dependencies]
+python = ">=3.8, <3.9"
 cmake = ">=3.2,<4"
 ninja = "*"
-pip = "*"
+# pip = "*"
 setuptools = "*"
 wheel = "*"
+
+[package.build.config]
+env = { HEADLESS = "on", BULLET = "on" }

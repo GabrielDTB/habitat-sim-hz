@@ -1,3 +1,8 @@
+[project]
+name = "habitat_sim"
+version = "0.2.3"
+requires-python = ">=3.8, <3.9"
+
 [build-system]
 build-backend = "setuptools.build_meta"
 requires = [
